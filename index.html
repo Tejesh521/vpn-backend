@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SecureConnect VPN</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101820;
+      color: white;
+      text-align: center;
+      padding-top: 100px;
+    }
+    .vpn-box {
+      background: #1e1e2f;
+      border-radius: 10px;
+      display: inline-block;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.4);
+    }
+    button {
+      padding: 10px 20px;
+      background: #00cc66;
+      border: none;
+      color: white;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="vpn-box">
+    <h2>SecureConnect VPN</h2>
+    <p>Status: <span id="status">Disconnected</span></p>
+    <select id="serverList">
+      <option value="USA">🇺🇸 USA</option>
+      <option value="UK">🇬🇧 UK</option>
+      <option value="India">🇮🇳 India</option>
+    </select><br>
+    <button onclick="connectVPN()">Connect</button>
+  </div>
+
+  <script>
+    function connectVPN() {
+      const selectedServer = document.getElementById("serverList").value;
+      const status = document.getElementById("status");
+
+      status.innerText = "Connecting...";
+
+      fetch("https://your-backend-url.onrender.com/connect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ server: selectedServer })
+      })
+      .then(response => response.json())
+      .then(data => {
+        status.innerText = data.message;
+      })
+      .catch(error => {
+        console.error("Connection error:", error);
+        status.innerText = "Failed to connect.";
+      });
+    }
+  </script>
+</body>
+</html>
